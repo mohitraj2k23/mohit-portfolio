@@ -1,898 +1,1010 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mohit Raj — Robotics & MedTech Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mohit Raj — Robotics & MedTech Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#030712;
+  --bg2:#060d1a;
+  --card:#0a1628;
+  --card2:#0d1f36;
+  --border:#1a2f4a;
+  --border2:#0f4c75;
+  --cyan:#00f5d4;
+  --blue:#0ea5e9;
+  --purple:#a855f7;
+  --pink:#ec4899;
+  --yellow:#fbbf24;
+  --text:#cbd5e1;
+  --white:#f1f5f9;
+  --muted:#475569;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Orbitron',sans-serif;
+  --body:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
 
-    :root {
-      --bg:        #080b10;
-      --bg-card:   #0f1318;
-      --bg-hover:  #141a22;
-      --border:    #1e2730;
-      --text:      #d8e0ea;
-      --muted:     #5a6a7a;
-      --accent:    #00d4aa;
-      --accent2:   #0078ff;
-      --white:     #f0f4f8;
-      --mono:      'JetBrains Mono', monospace;
-      --sans:      'Inter', system-ui, sans-serif;
-    }
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
 
-    html { scroll-behavior: smooth; }
+/* ── CANVAS BG ── */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.35}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 15px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
+/* ── NOISE OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:.4;
+}
 
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+/* ── WRAPPER ── */
+.wrap{position:relative;z-index:2}
+.container{max-width:980px;margin:0 auto;padding:0 28px}
 
-    /* ── LAYOUT ─────────────────────────────────── */
-    .container {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 0;
+  background:rgba(3,7,18,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,245,212,.08);
+}
+.nav-inner{display:flex;justify-content:space-between;align-items:center}
+.nav-logo{
+  font-family:var(--display);
+  font-size:14px;font-weight:700;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:.1em;
+}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{
+  font-size:11px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  transition:color .25s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--cyan);
+  transform:scaleX(0);transition:transform .25s;
+}
+.nav-links a:hover{color:var(--cyan)}
+.nav-links a:hover::after{transform:scaleX(1)}
 
-    section { padding: 80px 0; border-top: 1px solid var(--border); }
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:120px 0 80px;
+  position:relative;
+}
+.hero-grid{
+  display:grid;grid-template-columns:1fr auto;
+  gap:60px;align-items:center;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;
+  color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid rgba(0,245,212,.25);
+  padding:6px 14px;border-radius:2px;
+  margin-bottom:28px;
+  background:rgba(0,245,212,.04);
+}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 
-    /* ── NAV ─────────────────────────────────────── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(8, 11, 16, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    nav .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 14px;
-      padding-bottom: 14px;
-    }
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--accent);
-      letter-spacing: .04em;
-    }
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      transition: color .2s;
-    }
-    .nav-links a:hover { color: var(--accent); text-decoration: none; }
+.hero h1{
+  font-family:var(--display);
+  font-size:clamp(2.8rem,7vw,5rem);
+  font-weight:900;
+  line-height:1.0;
+  letter-spacing:-.01em;
+  margin-bottom:16px;
+  color:var(--white);
+}
+.hero h1 .grad{
+  background:linear-gradient(135deg,var(--cyan) 0%,var(--blue) 50%,var(--purple) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-role{
+  font-family:var(--mono);font-size:14px;
+  color:var(--muted);margin-bottom:28px;
+  min-height:24px;
+}
+.cursor{
+  display:inline-block;width:2px;height:16px;
+  background:var(--cyan);margin-left:2px;
+  animation:blink .75s step-end infinite;vertical-align:middle;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-    /* ── HERO ────────────────────────────────────── */
-    .hero {
-      padding: 100px 0 80px;
-      border-top: none;
-    }
-    .hero-eyebrow {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-size: clamp(2.6rem, 6vw, 4rem);
-      font-weight: 700;
-      color: var(--white);
-      line-height: 1.1;
-      letter-spacing: -.02em;
-      margin-bottom: 16px;
-    }
-    .hero-sub {
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: .06em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 28px;
-    }
-    .hero-bio {
-      font-size: 16px;
-      color: #8fa0b4;
-      max-width: 620px;
-      line-height: 1.75;
-      margin-bottom: 36px;
-    }
-    .hero-contacts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px 24px;
-    }
-    .hero-contacts a {
-      font-size: 13px;
-      color: var(--muted);
-      font-family: var(--mono);
-      transition: color .2s;
-    }
-    .hero-contacts a:hover { color: var(--accent); text-decoration: none; }
+.hero-bio{
+  font-size:15.5px;color:#7a90aa;
+  max-width:580px;line-height:1.8;margin-bottom:40px;
+}
+.hero-bio strong{color:var(--cyan);font-weight:500}
 
-    /* ── STATS ───────────────────────────────────── */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 0 0 0;
-      padding: 0;
-      border-top: none;
-    }
-    .stat {
-      background: var(--bg-card);
-      padding: 28px 24px;
-      text-align: center;
-    }
-    .stat-num {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--white);
-      line-height: 1;
-      letter-spacing: -.02em;
-    }
-    .stat-num span {
-      color: var(--accent);
-      font-size: 1.1rem;
-    }
-    .stat-label {
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      margin-top: 6px;
-    }
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  color:#000;font-weight:700;font-size:13px;letter-spacing:.06em;
+  border:none;border-radius:3px;cursor:pointer;text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 0 24px rgba(0,245,212,.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(0,245,212,.5)}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;
+  background:transparent;
+  color:var(--cyan);font-weight:600;font-size:13px;letter-spacing:.06em;
+  border:1px solid rgba(0,245,212,.4);border-radius:3px;
+  text-decoration:none;transition:all .2s;
+}
+.btn-outline:hover{background:rgba(0,245,212,.07);border-color:var(--cyan)}
 
-    /* ── SECTION HEADER ──────────────────────────── */
-    .sec-header {
-      display: flex;
-      align-items: baseline;
-      gap: 16px;
-      margin-bottom: 48px;
-    }
-    .sec-num {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: .1em;
-    }
-    .sec-header h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: -.01em;
-    }
+.hero-contacts{display:flex;flex-wrap:wrap;gap:8px 20px}
+.hero-contacts a{
+  font-family:var(--mono);font-size:12px;
+  color:var(--muted);text-decoration:none;
+  transition:color .2s;display:flex;align-items:center;gap:6px;
+}
+.hero-contacts a:hover{color:var(--cyan)}
+.hero-contacts a::before{content:'→';color:var(--cyan);font-size:10px}
 
-    /* ── PROJECT CARDS ───────────────────────────── */
-    .projects { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-    .project-card {
-      background: var(--bg-card);
-      padding: 32px;
-      transition: background .2s;
-    }
-    .project-card:hover { background: var(--bg-hover); }
-    .project-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-    .project-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--white);
-    }
-    .project-year {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-      padding-top: 3px;
-    }
-    .project-tags {
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: .06em;
-      margin-bottom: 16px;
-    }
-    .project-desc {
-      font-size: 14px;
-      color: #7a8fa4;
-      margin-bottom: 16px;
-    }
-    .project-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-    .project-bullets li {
-      font-size: 13.5px;
-      color: #8fa0b4;
-      padding-left: 16px;
-      position: relative;
-    }
-    .project-bullets li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--border);
-      font-size: 11px;
-      top: 2px;
-    }
-    .project-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--accent);
-      background: rgba(0, 212, 170, .08);
-      border: 1px solid rgba(0, 212, 170, .2);
-      padding: 4px 10px;
-      border-radius: 3px;
-    }
-    .project-badge::before { content: '★'; font-size: 10px; }
+/* HERO BADGE CARD */
+.hero-badge-wrap{display:flex;flex-direction:column;gap:12px;min-width:220px}
+.hero-badge{
+  background:rgba(10,22,40,.8);
+  border:1px solid var(--border);
+  border-radius:6px;padding:16px 20px;
+  backdrop-filter:blur(10px);
+  transition:border-color .3s,transform .3s;
+  position:relative;overflow:hidden;
+}
+.hero-badge::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.hero-badge:hover{border-color:rgba(0,245,212,.3);transform:translateX(-4px)}
+.hero-badge:hover::before{opacity:1}
+.badge-num{
+  font-family:var(--display);font-size:1.8rem;font-weight:900;
+  color:var(--white);line-height:1;
+}
+.badge-num span{color:var(--cyan);font-size:1rem}
+.badge-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
 
-    /* ── EXPERIENCE ──────────────────────────────── */
-    .experience { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-    .exp-card {
-      background: var(--bg-card);
-      padding: 32px;
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 24px;
-    }
-    .exp-meta { padding-top: 2px; }
-    .exp-date {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    .exp-loc {
-      font-size: 11px;
-      color: #3a4a5a;
-      margin-top: 4px;
-    }
-    .exp-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-    .exp-org {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-    .exp-bullets li {
-      font-size: 13.5px;
-      color: #8fa0b4;
-      padding-left: 16px;
-      position: relative;
-    }
-    .exp-bullets li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--border);
-      font-size: 11px;
-      top: 2px;
-    }
-    .grade-badge {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 500;
-      color: #f5c542;
-      background: rgba(245, 197, 66, .08);
-      border: 1px solid rgba(245, 197, 66, .2);
-      padding: 2px 8px;
-      border-radius: 3px;
-      margin-left: 8px;
-    }
+/* ── SECTION ── */
+section{padding:100px 0;position:relative}
+.sec-label{
+  display:flex;align-items:center;gap:16px;margin-bottom:56px;
+}
+.sec-num{
+  font-family:var(--mono);font-size:11px;color:var(--cyan);
+  letter-spacing:.14em;
+}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,245,212,.3),transparent)}
+.sec-label h2{
+  font-family:var(--display);font-size:1.4rem;font-weight:700;
+  color:var(--white);letter-spacing:.04em;
+  white-space:nowrap;
+}
 
-    /* ── SKILLS ──────────────────────────────────── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .skill-block {
-      background: var(--bg-card);
-      padding: 28px;
-    }
-    .skill-block h4 {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 14px;
-    }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag {
-      font-family: var(--mono);
-      font-size: 11.5px;
-      color: var(--muted);
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--border);
-      padding: 3px 9px;
-      border-radius: 3px;
-    }
+/* ── GLOW DIVIDER ── */
+.glow-div{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,245,212,.2),rgba(14,165,233,.2),transparent);
+  margin:0;
+}
 
-    /* ── CERTS ───────────────────────────────────── */
-    .certs-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 40px;
-    }
-    .cert-card {
-      background: var(--bg-card);
-      padding: 22px 24px;
-      transition: background .2s;
-    }
-    .cert-card:hover { background: var(--bg-hover); }
-    .cert-name {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-    .cert-org {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .cert-badge {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--accent);
-      background: rgba(0, 212, 170, .07);
-      border: 1px solid rgba(0, 212, 170, .18);
-      padding: 1px 7px;
-      border-radius: 2px;
-      margin-top: 6px;
-    }
+/* ── PROJECT CARDS ── */
+.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border)}
+.proj-card{
+  background:var(--card);padding:32px;
+  position:relative;overflow:hidden;
+  transition:background .25s;
+  cursor:default;
+}
+.proj-card::after{
+  content:'';position:absolute;
+  top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(0,245,212,.04),transparent);
+  transition:left .5s;
+}
+.proj-card:hover::after{left:100%}
+.proj-card:hover{background:var(--card2)}
+.proj-corner{
+  position:absolute;top:0;right:0;
+  width:40px;height:40px;
+  border-bottom:1px solid rgba(0,245,212,.15);
+  border-left:1px solid rgba(0,245,212,.15);
+}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.proj-title{font-size:1rem;font-weight:700;color:var(--white);line-height:1.3}
+.proj-year{font-family:var(--mono);font-size:10px;color:var(--muted);padding-top:3px;white-space:nowrap}
+.proj-tags{font-size:11px;color:var(--muted);letter-spacing:.05em;margin-bottom:14px;font-family:var(--mono)}
+.proj-desc{font-size:13.5px;color:#6a80a0;margin-bottom:16px;line-height:1.7}
+.proj-bullets{list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+.proj-bullets li{font-size:13px;color:#7a90aa;padding-left:18px;position:relative}
+.proj-bullets li::before{content:'▸';position:absolute;left:0;color:var(--cyan);font-size:10px;top:3px}
+.proj-award{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11.5px;font-weight:600;
+  color:var(--yellow);
+  background:rgba(251,191,36,.08);
+  border:1px solid rgba(251,191,36,.2);
+  padding:5px 12px;border-radius:2px;
+  font-family:var(--mono);
+}
+.proj-award::before{content:'★';font-size:10px}
 
-    /* ── ACHIEVEMENTS ────────────────────────────── */
-    .achievements-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .ach-item {
-      background: var(--bg-card);
-      padding: 22px 28px;
-      display: grid;
-      grid-template-columns: 28px 1fr;
-      gap: 14px;
-      align-items: start;
-      transition: background .2s;
-    }
-    .ach-item:hover { background: var(--bg-hover); }
-    .ach-icon {
-      color: var(--accent);
-      font-size: 14px;
-      padding-top: 2px;
-    }
-    .ach-title {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 3px;
-    }
-    .ach-desc { font-size: 12.5px; color: var(--muted); }
+/* FEATURED CARD */
+.proj-card.featured{
+  grid-column:span 2;
+  background:linear-gradient(135deg,rgba(10,22,40,.95),rgba(6,13,26,.95));
+  border-top:1px solid rgba(0,245,212,.2);
+}
+.proj-card.featured .proj-title{font-size:1.2rem}
 
-    /* ── FOOTER ──────────────────────────────────── */
-    footer {
-      padding: 40px 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-    footer p {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: #2a3a4a;
-      letter-spacing: .06em;
-    }
+/* ── EXPERIENCE TIMELINE ── */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:1px;background:linear-gradient(180deg,var(--cyan),var(--blue),var(--purple),transparent);
+}
+.tl-item{position:relative;margin-bottom:40px}
+.tl-dot{
+  position:absolute;left:-38px;top:6px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+  border:2px solid var(--bg);
+}
+.tl-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:6px;padding:28px;
+  transition:border-color .3s,transform .3s;
+  position:relative;overflow:hidden;
+}
+.tl-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:linear-gradient(180deg,var(--cyan),var(--blue));
+  opacity:0;transition:opacity .3s;
+}
+.tl-card:hover{border-color:rgba(0,245,212,.25);transform:translateX(6px)}
+.tl-card:hover::before{opacity:1}
+.tl-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;flex-wrap:wrap;gap:8px}
+.tl-title{font-size:1rem;font-weight:700;color:var(--white)}
+.tl-date{font-family:var(--mono);font-size:11px;color:var(--cyan);background:rgba(0,245,212,.08);padding:3px 10px;border-radius:2px}
+.tl-org{font-size:12px;color:var(--muted);margin-bottom:14px;font-family:var(--mono)}
+.tl-bullets{list-style:none;display:flex;flex-direction:column;gap:5px}
+.tl-bullets li{font-size:13.5px;color:#7a90aa;padding-left:18px;position:relative}
+.tl-bullets li::before{content:'▸';position:absolute;left:0;color:var(--blue);font-size:10px;top:3px}
+.grade-pill{
+  display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;
+  color:#000;background:var(--yellow);
+  padding:2px 8px;border-radius:2px;margin-left:8px;
+}
 
-    /* ── RESPONSIVE ──────────────────────────────── */
-    @media (max-width: 680px) {
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .skills-grid { grid-template-columns: 1fr; }
-      .certs-grid { grid-template-columns: 1fr; }
-      .exp-card { grid-template-columns: 1fr; gap: 6px; }
-      .exp-meta { display: flex; gap: 12px; }
-      .nav-links { display: none; }
-    }
-    @media (max-width: 440px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-    }
+/* ── SKILLS ── */
+.skills-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border)}
+.skill-block{
+  background:var(--card);padding:26px;
+  transition:background .25s;
+}
+.skill-block:hover{background:var(--card2)}
+.skill-icon{font-size:20px;margin-bottom:10px}
+.skill-block h4{
+  font-size:11px;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--cyan);font-weight:600;margin-bottom:14px;font-family:var(--mono);
+}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{
+  font-family:var(--mono);font-size:11px;
+  color:#5a7a9a;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  padding:3px 9px;border-radius:2px;
+  transition:color .2s,border-color .2s,background .2s;
+}
+.tag:hover{color:var(--cyan);border-color:rgba(0,245,212,.3);background:rgba(0,245,212,.05)}
 
-    @media (prefers-reduced-motion: no-preference) {
-      .project-card, .cert-card, .ach-item, .exp-card {
-        transition: background .18s ease;
-      }
-    }
-  </style>
+/* ── CERTS ── */
+.certs-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+}
+.cert-count{
+  font-family:var(--mono);font-size:11px;
+  color:var(--cyan);background:rgba(0,245,212,.08);
+  border:1px solid rgba(0,245,212,.2);
+  padding:4px 12px;border-radius:2px;
+}
+.certs-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;background:var(--border);
+  border:1px solid var(--border);
+  margin-bottom:32px;
+}
+.cert-card{
+  background:var(--card);padding:20px 22px;
+  transition:background .25s,border-color .25s;
+  position:relative;overflow:hidden;
+  border-top:2px solid transparent;
+}
+.cert-card:hover{background:var(--card2);border-top-color:var(--cyan)}
+.cert-card.cisco{border-top-color:rgba(0,126,204,.4)}
+.cert-card.cisco:hover{border-top-color:#007ecc}
+.cert-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;line-height:1.4}
+.cert-org{font-size:11.5px;color:var(--muted);line-height:1.4}
+.cert-pill{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;
+  padding:2px 7px;border-radius:2px;margin-top:6px;font-weight:600;
+}
+.cert-pill.green{color:var(--cyan);background:rgba(0,245,212,.07);border:1px solid rgba(0,245,212,.2)}
+.cert-pill.blue{color:var(--blue);background:rgba(14,165,233,.07);border:1px solid rgba(14,165,233,.2)}
+.cert-pill.yellow{color:var(--yellow);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2)}
+.cert-pill.purple{color:var(--purple);background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.2)}
+
+/* ── ACHIEVEMENTS ── */
+.ach-grid{display:flex;flex-direction:column;gap:2px;background:var(--border);border:1px solid var(--border)}
+.ach-item{
+  background:var(--card);padding:20px 28px;
+  display:grid;grid-template-columns:44px 1fr auto;
+  gap:16px;align-items:center;
+  transition:background .25s,transform .25s;
+}
+.ach-item:hover{background:var(--card2);transform:translateX(4px)}
+.ach-rank{
+  font-family:var(--display);font-size:1.3rem;font-weight:900;
+  color:var(--cyan);text-align:center;opacity:.8;
+}
+.ach-title{font-size:13.5px;font-weight:600;color:var(--white);margin-bottom:3px}
+.ach-desc{font-size:12px;color:var(--muted)}
+.ach-badge{
+  font-family:var(--mono);font-size:10px;font-weight:700;
+  color:#000;background:var(--cyan);
+  padding:4px 10px;border-radius:2px;
+  white-space:nowrap;text-transform:uppercase;letter-spacing:.06em;
+}
+.ach-badge.gold{background:var(--yellow)}
+.ach-badge.silver{background:#94a3b8;color:#000}
+.ach-badge.purple{background:var(--purple);color:#fff}
+.ach-badge.pink{background:var(--pink);color:#fff}
+.ach-badge.gray{background:var(--muted);color:#fff}
+
+/* ── FOOTER ── */
+footer{
+  padding:48px 0;
+  border-top:1px solid var(--border);
+  text-align:center;
+}
+.footer-logo{
+  font-family:var(--display);font-size:18px;font-weight:900;
+  background:linear-gradient(135deg,var(--cyan),var(--blue),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:12px;letter-spacing:.08em;
+}
+footer p{font-family:var(--mono);font-size:11px;color:#1e3a5a;letter-spacing:.08em}
+
+/* ── REVEAL ANIMATION ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-badge-wrap{flex-direction:row;flex-wrap:wrap;min-width:auto}
+  .hero-badge{flex:1;min-width:140px}
+  .projects-grid{grid-template-columns:1fr}
+  .proj-card.featured{grid-column:span 1}
+  .skills-wrap{grid-template-columns:1fr 1fr}
+  .certs-grid{grid-template-columns:1fr 1fr}
+  .ach-item{grid-template-columns:36px 1fr;gap:12px}
+  .ach-badge{display:none}
+  .nav-links{display:none}
+}
+@media(max-width:480px){
+  .skills-wrap{grid-template-columns:1fr}
+  .certs-grid{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column}
+}
+</style>
 </head>
 <body>
 
-<!-- ───────────────── NAV ───────────────── -->
+<!-- ANIMATED CANVAS BG -->
+<canvas id="bg-canvas"></canvas>
+
+<div class="wrap">
+
+<!-- ── NAV ── -->
 <nav>
   <div class="container">
-    <span class="nav-logo">MR //</span>
-    <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#certifications">Certifications</a></li>
-    </ul>
+    <div class="nav-inner">
+      <span class="nav-logo">MOHIT RAJ //</span>
+      <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#certifications">Certs</a></li>
+        <li><a href="#achievements">Wins</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 
-<!-- ───────────────── HERO ───────────────── -->
-<div class="container">
-  <section class="hero">
-    <p class="hero-eyebrow">Portfolio // Biomedical &amp; Robotics Engineering</p>
-    <h1>Mohit Raj</h1>
-    <p class="hero-sub">Embedded Systems · Autonomous Robotics · MedTech &amp; AI</p>
-    <p class="hero-bio">
-      B.Tech undergraduate at MIT Muzaffarpur (2027) building real hardware-software systems —
-      from biosensors that detect microplastics to autonomous SLAM drones.
-      National Top-4 at IDEA ONE Health Hackathon 2025, ISRO IRoC-U Finalist,
-      ET-AI Hackathon 2026 Semi-Finalist.
-    </p>
-    <div class="hero-contacts">
-      <a href="mailto:mohitraj.2k23@gmail.com">mohitraj.2k23@gmail.com</a>
-      <a href="tel:+919570983554">+91 95709 83554</a>
-      <a href="https://linkedin.com/in/mohit-raj-80a418336" target="_blank">linkedin.com/in/mohit-raj-80a418336</a>
-      <a href="#">Patna, Bihar, India</a>
-    </div>
-  </section>
-
-  <!-- STATS -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-num">04</div>
-      <div class="stat-label">Major Engineering Projects</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">3</div>
-      <div class="stat-label">National-level Finals / Semi-Finals</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">A<span>+</span></div>
-      <div class="stat-label">Robotics &amp; Automation Internship Grade</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">15</div>
-      <div class="stat-label">Professional Certifications</div>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag">
+          <span></span> Available for Internships & Research Roles
+        </div>
+        <h1>MOHIT<br><span class="grad">RAJ</span></h1>
+        <p class="hero-role"><span id="typed"></span><span class="cursor"></span></p>
+        <p class="hero-bio">
+          B.Tech undergraduate at <strong>MIT Muzaffarpur</strong> building real hardware-software systems —
+          from <strong>biosensors that detect microplastics</strong> to <strong>autonomous SLAM drones</strong> for ISRO.
+          Oracle GenAI Professional · IBM Data Science Certified.
+        </p>
+        <div class="hero-btns">
+          <a href="mailto:mohitraj.2k23@gmail.com" class="btn-primary">↗ Get In Touch</a>
+          <a href="#projects" class="btn-outline">View Projects</a>
+        </div>
+        <div class="hero-contacts">
+          <a href="mailto:mohitraj.2k23@gmail.com">mohitraj.2k23@gmail.com</a>
+          <a href="tel:+919570983554">+91 95709 83554</a>
+          <a href="https://linkedin.com/in/mohit-raj-80a418336" target="_blank">LinkedIn</a>
+          <a href="#">Patna, Bihar, India</a>
+        </div>
+      </div>
+      <div class="hero-badge-wrap">
+        <div class="hero-badge">
+          <div class="badge-num">04</div>
+          <div class="badge-label">Major Projects</div>
+        </div>
+        <div class="hero-badge">
+          <div class="badge-num">3</div>
+          <div class="badge-label">National Finals</div>
+        </div>
+        <div class="hero-badge">
+          <div class="badge-num">A<span>+</span></div>
+          <div class="badge-label">Internship Grade</div>
+        </div>
+        <div class="hero-badge">
+          <div class="badge-num" id="cert-count">15</div>
+          <div class="badge-label">Certifications</div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ───────────────── PROJECTS ───────────────── -->
-<div class="container">
-  <section id="projects">
-    <div class="sec-header">
+<div class="glow-div"></div>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="container">
+    <div class="sec-label reveal">
       <span class="sec-num">01</span>
-      <h2>Key Projects</h2>
+      <div class="sec-line"></div>
+      <h2>KEY PROJECTS</h2>
+      <div class="sec-line"></div>
     </div>
 
-    <div class="projects">
+    <div class="projects-grid reveal">
 
-      <!-- ASCEND -->
-      <div class="project-card">
-        <div class="project-top">
-          <span class="project-title">ASCEND — AI-Enabled Mini Drone</span>
-          <span class="project-year">ISRO IRoC-U 2026</span>
+      <!-- FEATURED: ASCEND -->
+      <div class="proj-card featured">
+        <div class="proj-corner"></div>
+        <div class="proj-top">
+          <span class="proj-title">ASCEND — AI-Enabled Autonomous Mini Drone</span>
+          <span class="proj-year">ISRO IRoC-U 2026</span>
         </div>
-        <p class="project-tags">Autonomous Robotics · GPS-free SLAM · Team MARTIANS</p>
-        <p class="project-desc">A compact autonomous drone built for India's premier ISRO robotics challenge — designed to operate continuously without manual intervention.</p>
-        <ul class="project-bullets">
-          <li>GPS-free SLAM-based area surveys and vision-assisted precision landing</li>
-          <li>Automated pogo-pin docking to a solar-assisted mobile power station</li>
-          <li>Multi-mission autonomous operation pipeline</li>
+        <p class="proj-tags">Autonomous Robotics · GPS-free SLAM · Vision AI · Team MARTIANS</p>
+        <p class="proj-desc">A compact autonomous drone built for India's premier ISRO robotics challenge. Designed to survey areas without GPS, land precisely using computer vision, and dock autonomously to a solar-powered station — all without any human intervention.</p>
+        <ul class="proj-bullets">
+          <li>GPS-free SLAM-based area surveys with obstacle avoidance</li>
+          <li>Vision-assisted precision landing using onboard camera</li>
+          <li>Automated pogo-pin docking to solar-assisted mobile power station</li>
+          <li>Continuous multi-mission operation pipeline — zero manual intervention</li>
         </ul>
-        <span class="project-badge">ISRO IRoC-U Finalist — Top university robotics team in India</span>
+        <span class="proj-award">ISRO IRoC-U Finalist — Top University Robotics Team in India</span>
       </div>
 
       <!-- SAI -->
-      <div class="project-card">
-        <div class="project-top">
-          <span class="project-title">Project SAI — Microplastics Detection in Water</span>
-          <span class="project-year">IDEA ONE 2025</span>
+      <div class="proj-card">
+        <div class="proj-corner"></div>
+        <div class="proj-top">
+          <span class="proj-title">Project SAI — Microplastics Biosensor</span>
+          <span class="proj-year">2024–2025</span>
         </div>
-        <p class="project-tags">Arduino-based Biosensor · Environmental Health · 2024–2025</p>
-        <p class="project-desc">A real-time microplastics detection system built from scratch — hardware, firmware, and dashboard.</p>
-        <ul class="project-bullets">
-          <li>Turbidity + optical sensor array with custom signal processing &amp; noise filtering</li>
-          <li>Live web dashboard for continuous water-quality monitoring</li>
-          <li>Validated detection across multiple test conditions</li>
+        <p class="proj-tags">Arduino · Biosensor · Environmental Health</p>
+        <p class="proj-desc">Real-time microplastics detection in water — built from scratch including hardware, firmware, and live dashboard.</p>
+        <ul class="proj-bullets">
+          <li>Turbidity + optical sensor array with noise filtering</li>
+          <li>Custom signal processing & calibration pipeline</li>
+          <li>Live web dashboard for continuous monitoring</li>
         </ul>
-        <span class="project-badge">National Top-4 — IDEA ONE Health Hackathon 2025</span>
+        <span class="proj-award">National Top-4 — IDEA ONE Health Hackathon 2025</span>
       </div>
 
       <!-- ROBOTIC ARM -->
-      <div class="project-card">
-        <div class="project-top">
-          <span class="project-title">Multi-Joint Robotic Arm</span>
-          <span class="project-year">2024</span>
+      <div class="proj-card">
+        <div class="proj-corner"></div>
+        <div class="proj-top">
+          <span class="proj-title">Multi-Joint Robotic Arm</span>
+          <span class="proj-year">2024</span>
         </div>
-        <p class="project-tags">Mechanical Design · Motion Control · CAD &amp; Fabrication</p>
-        <p class="project-desc">A multi-DOF robotic arm with programmable pick-and-place operations.</p>
-        <ul class="project-bullets">
-          <li>SolidWorks CAD design, 3D-printed fabrication</li>
-          <li>Arduino servo control with forward kinematics &amp; PID position holding</li>
-          <li>PWM control tuned for consistent motion across payload conditions</li>
+        <p class="proj-tags">SolidWorks · PID Control · 3D Printing</p>
+        <p class="proj-desc">Multi-DOF arm with programmable pick-and-place operations, built from CAD to hardware.</p>
+        <ul class="proj-bullets">
+          <li>SolidWorks CAD → 3D printed fabrication</li>
+          <li>Arduino servo control with forward kinematics</li>
+          <li>PID tuned for consistent motion across payloads</li>
         </ul>
       </div>
 
-      <!-- GENAI ROBOT -->
-      <div class="project-card">
-        <div class="project-top">
-          <span class="project-title">GenAI-Powered Robot Simulation</span>
-          <span class="project-year">2025</span>
+      <!-- GENAI -->
+      <div class="proj-card">
+        <div class="proj-corner"></div>
+        <div class="proj-top">
+          <span class="proj-title">GenAI-Powered Robot Simulation</span>
+          <span class="proj-year">2025</span>
         </div>
-        <p class="project-tags">Mechanical Design · AI Integration</p>
-        <p class="project-desc">A compact robotic prototype combining sensor-actuator hardware with AI-driven decision making.</p>
-        <ul class="project-bullets">
+        <p class="proj-tags">OpenAI API · Prompt Engineering · Edge AI</p>
+        <p class="proj-desc">Robotic prototype that uses AI for real-time decision making in autonomous task execution.</p>
+        <ul class="proj-bullets">
           <li>OpenAI API integration for real-time inference</li>
           <li>Custom prompt-engineering pipelines for control logic</li>
+          <li>Sensor-actuator integration with AI decision layer</li>
         </ul>
       </div>
 
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-<!-- ───────────────── EXPERIENCE ───────────────── -->
-<div class="container">
-  <section id="experience">
-    <div class="sec-header">
+<div class="glow-div"></div>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="container">
+    <div class="sec-label reveal">
       <span class="sec-num">02</span>
-      <h2>Experience</h2>
+      <div class="sec-line"></div>
+      <h2>EXPERIENCE</h2>
+      <div class="sec-line"></div>
     </div>
 
-    <div class="experience">
+    <div class="timeline reveal">
 
-      <!-- HYPERLON -->
-      <div class="exp-card">
-        <div class="exp-meta">
-          <div class="exp-date">Apr – May 2026</div>
-          <div class="exp-loc">Bihar, India</div>
-        </div>
-        <div>
-          <div class="exp-title">
-            Robotics &amp; Automation Intern
-            <span class="grade-badge">A+</span>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div class="tl-title">Robotics & Automation Intern <span class="grade-pill">A+</span></div>
+            <div class="tl-date">Apr – May 2026</div>
           </div>
-          <div class="exp-org">Hyperlon Motion Technologies · AICTE / ISO / MSME / UDYAM Certified · Applied Physics &amp; Systems Engineering Division</div>
-          <ul class="exp-bullets">
-            <li>6-week structured programme across 3 live project modules in robotic motion systems &amp; automation</li>
-            <li>Ranked in top tier of intern cohort — independently debugged and optimised robotic motion sequences</li>
-            <li>Hands-on with servo control, sensor integration, and PID tuning on industrial hardware</li>
+          <div class="tl-org">Hyperlon Motion Technologies · Bihar, India · Applied Physics & Systems Engineering Division</div>
+          <ul class="tl-bullets">
+            <li>6-week structured programme across 3 live project modules in robotic motion systems & automation</li>
+            <li>Ranked top tier of intern cohort — independently debugged and optimised robotic motion sequences</li>
+            <li>Hands-on with servo control, sensor integration, and PID tuning on real industrial hardware</li>
           </ul>
         </div>
       </div>
 
-      <!-- SERVICENOW -->
-      <div class="exp-card">
-        <div class="exp-meta">
-          <div class="exp-date">2026</div>
-          <div class="exp-loc">Online</div>
-        </div>
-        <div>
-          <div class="exp-title">ServiceNow Administration &amp; Agentic AI Virtual Intern</div>
-          <div class="exp-org">ServiceNow University + AICTE (via SmartBridge)</div>
-          <ul class="exp-bullets">
-            <li>7-module AICTE-approved internship: Administration, Agentic AI, ATF, Flows, Reports &amp; more</li>
-            <li>Practical experience in enterprise IT workflows and AI-driven agentic systems</li>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--blue);box-shadow:0 0 12px var(--blue)"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div class="tl-title">ServiceNow Administration & Agentic AI Virtual Intern</div>
+            <div class="tl-date">2026</div>
+          </div>
+          <div class="tl-org">ServiceNow University + AICTE via SmartBridge · Online</div>
+          <ul class="tl-bullets">
+            <li>7-module AICTE-approved internship: Administration, Agentic AI, ATF, Flows, Reports & more</li>
+            <li>Practical experience in enterprise IT service management and AI-driven agentic systems</li>
           </ul>
         </div>
       </div>
 
-      <!-- E-YANTRA -->
-      <div class="exp-card">
-        <div class="exp-meta">
-          <div class="exp-date">2026 – Present</div>
-          <div class="exp-loc">IIT Bombay Initiative</div>
-        </div>
-        <div>
-          <div class="exp-title">Senior Coordinator — e-Yantra Robotics Sprint</div>
-          <div class="exp-org">e-Yantra Initiative, IIT Bombay · Volunteer Leadership Role</div>
-          <ul class="exp-bullets">
-            <li>Promoting robotics and technical learning through campus outreach and social media drives</li>
-            <li>Coordinating teams and managing student participation; encouraging innovation and problem-solving</li>
-            <li>Leadership &amp; organisational experience under one of India's premier robotics education programmes</li>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--purple);box-shadow:0 0 12px var(--purple)"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div class="tl-title">Senior Coordinator — e-Yantra Robotics Sprint</div>
+            <div class="tl-date">2026 – Present</div>
+          </div>
+          <div class="tl-org">e-Yantra Initiative, IIT Bombay · Volunteer Leadership Role</div>
+          <ul class="tl-bullets">
+            <li>Promoting robotics education through campus outreach and social media drives under IIT Bombay</li>
+            <li>Coordinating teams and managing participation; fostering innovation among engineering students</li>
           </ul>
         </div>
       </div>
 
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-<!-- ───────────────── SKILLS ───────────────── -->
-<div class="container">
-  <section id="skills">
-    <div class="sec-header">
+<div class="glow-div"></div>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-label reveal">
       <span class="sec-num">03</span>
-      <h2>Technical Skills</h2>
+      <div class="sec-line"></div>
+      <h2>TECHNICAL SKILLS</h2>
+      <div class="sec-line"></div>
     </div>
 
-    <div class="skills-grid">
-
+    <div class="skills-wrap reveal">
       <div class="skill-block">
+        <div class="skill-icon">🤖</div>
         <h4>Robotics</h4>
         <div class="skill-tags">
-          <span class="tag">ROS / ROS2</span>
-          <span class="tag">Arduino</span>
-          <span class="tag">Raspberry Pi</span>
-          <span class="tag">Kinematics</span>
-          <span class="tag">PID Control</span>
-          <span class="tag">Sensor Fusion</span>
-          <span class="tag">SLAM</span>
-          <span class="tag">Autonomous Navigation</span>
+          <span class="tag">ROS / ROS2</span><span class="tag">Arduino</span>
+          <span class="tag">Raspberry Pi</span><span class="tag">SLAM</span>
+          <span class="tag">Kinematics</span><span class="tag">PID Control</span>
+          <span class="tag">Sensor Fusion</span><span class="tag">Autonomous Nav</span>
         </div>
       </div>
-
       <div class="skill-block">
-        <h4>Embedded Systems</h4>
-        <div class="skill-tags">
-          <span class="tag">Microcontrollers (AVR)</span>
-          <span class="tag">IMU / Ultrasonic</span>
-          <span class="tag">Turbidity Sensors</span>
-          <span class="tag">Real-time Data Acquisition</span>
-          <span class="tag">PCB Circuit Design</span>
-          <span class="tag">Firmware Dev</span>
-        </div>
-      </div>
-
-      <div class="skill-block">
-        <h4>AI &amp; Programming</h4>
-        <div class="skill-tags">
-          <span class="tag">Python</span>
-          <span class="tag">C++</span>
-          <span class="tag">OpenCV</span>
-          <span class="tag">OpenAI API</span>
-          <span class="tag">Prompt Engineering</span>
-          <span class="tag">Edge AI</span>
-          <span class="tag">TensorFlow</span>
-        </div>
-      </div>
-
-      <div class="skill-block">
+        <div class="skill-icon">🔬</div>
         <h4>Biomedical / MedTech</h4>
         <div class="skill-tags">
-          <span class="tag">Biosensor Development</span>
-          <span class="tag">Medical Device Design</span>
-          <span class="tag">Wearable Health Tech</span>
-          <span class="tag">Point-of-care Devices</span>
-          <span class="tag">Healthcare IoT</span>
+          <span class="tag">Biosensor Design</span><span class="tag">Medical Devices</span>
+          <span class="tag">Wearable Health Tech</span><span class="tag">POC Devices</span>
+          <span class="tag">Healthcare IoT</span><span class="tag">Biomedical Instrumentation</span>
         </div>
       </div>
-
       <div class="skill-block">
-        <h4>CAD &amp; Design</h4>
+        <div class="skill-icon">⚡</div>
+        <h4>Embedded Systems</h4>
         <div class="skill-tags">
-          <span class="tag">SolidWorks</span>
-          <span class="tag">Rapid Prototyping</span>
-          <span class="tag">3D Printing</span>
-          <span class="tag">Mechanical Design</span>
+          <span class="tag">Microcontrollers (AVR)</span><span class="tag">IMU / Ultrasonic</span>
+          <span class="tag">Real-time DAQ</span><span class="tag">PCB Design</span>
+          <span class="tag">Signal Processing</span><span class="tag">Firmware Dev</span>
         </div>
       </div>
-
       <div class="skill-block">
+        <div class="skill-icon">🧠</div>
+        <h4>AI & Programming</h4>
+        <div class="skill-tags">
+          <span class="tag">Python</span><span class="tag">C++</span>
+          <span class="tag">OpenCV</span><span class="tag">TensorFlow</span>
+          <span class="tag">OpenAI API</span><span class="tag">Prompt Engineering</span>
+          <span class="tag">Edge AI</span><span class="tag">Machine Learning</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-icon">📐</div>
+        <h4>CAD & Design</h4>
+        <div class="skill-tags">
+          <span class="tag">SolidWorks</span><span class="tag">3D Printing</span>
+          <span class="tag">Rapid Prototyping</span><span class="tag">Mechanical Design</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-icon">☁️</div>
         <h4>Cloud / Platforms</h4>
         <div class="skill-tags">
-          <span class="tag">ServiceNow</span>
-          <span class="tag">Oracle Cloud GenAI</span>
-          <span class="tag">IBM Data Science</span>
-          <span class="tag">Git / GitHub</span>
-          <span class="tag">IoT</span>
-          <span class="tag">Data Visualisation</span>
+          <span class="tag">Oracle Cloud GenAI</span><span class="tag">ServiceNow</span>
+          <span class="tag">IBM Data Science</span><span class="tag">Git / GitHub</span>
+          <span class="tag">IoT</span><span class="tag">Data Visualisation</span>
         </div>
       </div>
-
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-<!-- ───────────────── CERTIFICATIONS & ACHIEVEMENTS ───────────────── -->
-<div class="container">
-  <section id="certifications">
-    <div class="sec-header">
+<div class="glow-div"></div>
+
+<!-- ── CERTIFICATIONS ── -->
+<section id="certifications">
+  <div class="container">
+    <div class="sec-label reveal">
       <span class="sec-num">04</span>
-      <h2>Certifications &amp; Achievements</h2>
+      <div class="sec-line"></div>
+      <h2>CERTIFICATIONS</h2>
+      <div class="sec-line"></div>
     </div>
 
-    <!-- CERTIFICATIONS -->
-    <div class="certs-grid">
-
-      <div class="cert-card">
-        <div class="cert-name">Oracle Cloud Infrastructure 2025</div>
-        <div class="cert-org">Generative AI Professional — Oracle</div>
+    <div class="reveal">
+      <div class="certs-header">
+        <p style="font-size:13px;color:var(--muted)">Verified credentials from Oracle, IBM, Cisco, NPTEL, Intel & more</p>
+        <span class="cert-count">15 Certificates</span>
       </div>
 
-      <div class="cert-card">
-        <div class="cert-name">IBM Data Science Professional Certificate</div>
-        <div class="cert-org">IBM / Coursera</div>
+      <div class="certs-grid">
+        <div class="cert-card">
+          <div class="cert-name">Oracle Cloud Infrastructure 2025</div>
+          <div class="cert-org">Generative AI Professional — Oracle</div>
+          <span class="cert-pill green">Oracle GenAI</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-name">IBM Data Science Professional</div>
+          <div class="cert-org">IBM / Coursera</div>
+          <span class="cert-pill blue">IBM</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-name">ServiceNow Administration + Agentic AI</div>
+          <div class="cert-org">AICTE Certified — SmartBridge</div>
+          <span class="cert-pill purple">AICTE</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-name">Robotics & Automation Internship</div>
+          <div class="cert-org">Hyperlon Motion Technologies</div>
+          <span class="cert-pill yellow">Grade A+</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-name">AI for Business Professionals</div>
+          <div class="cert-org">HP LIFE</div>
+          <span class="cert-pill green">HP LIFE</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-name">GenAI-Powered Data Analytics</div>
+          <div class="cert-org">Oracle OCI</div>
+          <span class="cert-pill green">Oracle OCI</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-name">NPTEL Elite — Soft Skills & Personality</div>
+          <div class="cert-org">IIT Kanpur / SWAYAM · Feb–Apr 2026</div>
+          <span class="cert-pill yellow">Top 5% · 86%</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-name">Intel AI For All — AI Appreciate Stage</div>
+          <div class="cert-org">Intel + Digital India / CBSE — Mar 2026</div>
+          <span class="cert-pill blue">Intel</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-name">IKS-TKDL Merit Certificate</div>
+          <div class="cert-org">Ministry of Education + CSIR — Apr 2026</div>
+          <span class="cert-pill purple">75%+</span>
+        </div>
+        <!-- CISCO CERTS -->
+        <div class="cert-card cisco">
+          <div class="cert-name">Introduction to Modern AI</div>
+          <div class="cert-org">Cisco Networking Academy · MIT Muzaffarpur — 09 Jun 2026</div>
+          <span class="cert-pill blue">Cisco NetAcad</span>
+        </div>
+        <div class="cert-card cisco">
+          <div class="cert-name">Introduction to Data Science</div>
+          <div class="cert-org">Cisco Networking Academy · MIT Muzaffarpur — 09 Jun 2026</div>
+          <span class="cert-pill blue">Cisco NetAcad</span>
+        </div>
+        <div class="cert-card cisco">
+          <div class="cert-name">Data Analytics Essentials</div>
+          <div class="cert-org">Cisco Networking Academy · EdCreate Foundation — 09 Jun 2026</div>
+          <span class="cert-pill blue">Cisco NetAcad</span>
+        </div>
+        <div class="cert-card cisco">
+          <div class="cert-name">Apply AI: Analyze Customer Reviews</div>
+          <div class="cert-org">Cisco Networking Academy · MIT Muzaffarpur — 09 Jun 2026</div>
+          <span class="cert-pill blue">Cisco NetAcad</span>
+        </div>
+        <div class="cert-card cisco">
+          <div class="cert-name">Python Essentials 1</div>
+          <div class="cert-org">Cisco + Python Institute · MIT Muzaffarpur — 14 Jun 2026</div>
+          <span class="cert-pill blue">Cisco NetAcad</span>
+        </div>
+        <div class="cert-card cisco">
+          <div class="cert-name">CCNA: Introduction to Networks</div>
+          <div class="cert-org">Cisco Networking Academy · MIT Muzaffarpur — 14 Jun 2026</div>
+          <span class="cert-pill blue">Cisco NetAcad</span>
+        </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="cert-card">
-        <div class="cert-name">ServiceNow Virtual Internship + CSA Prep</div>
-        <div class="cert-org">AICTE Certified — SmartBridge</div>
-      </div>
+<div class="glow-div"></div>
 
-      <div class="cert-card">
-        <div class="cert-name">Robotics &amp; Automation Internship</div>
-        <div class="cert-org">Hyperlon Motion Technologies</div>
-        <span class="cert-badge">Grade A+</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">AI for Business Professionals</div>
-        <div class="cert-org">HP LIFE</div>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">GenAI-Powered Data Analytics Simulation</div>
-        <div class="cert-org">Oracle OCI</div>
-      </div>
-
-      <!-- ── NEW CERTIFICATIONS ── -->
-      <div class="cert-card">
-        <div class="cert-name">Introduction to Modern AI</div>
-        <div class="cert-org">Cisco — Jun 2026</div>
-        <span class="cert-badge">New</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">NPTEL Elite Certificate — Soft Skills &amp; Personality</div>
-        <div class="cert-org">IIT Kanpur / SWAYAM · Feb–Apr 2026</div>
-        <span class="cert-badge">Top 5% · 86% Score</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">Intel AI For All — AI Appreciate Stage</div>
-        <div class="cert-org">Intel + Digital India / CBSE — Mar 2026</div>
-        <span class="cert-badge">New</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">IKS-TKDL Merit Certificate</div>
-        <div class="cert-org">Traditional Knowledge: IP &amp; People's Rights · Ministry of Education + CSIR — Apr 2026</div>
-        <span class="cert-badge">75%+</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">Introduction to Data Science</div>
-        <div class="cert-org">Cisco Networking Academy · Muzaffarpur Institute of Technology — 09 Jun 2026</div>
-        <span class="cert-badge">Cisco NetAcad</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">Data Analytics Essentials</div>
-        <div class="cert-org">Cisco Networking Academy · EdCreate Foundation — 09 Jun 2026</div>
-        <span class="cert-badge">Cisco NetAcad</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">Apply AI: Analyze Customer Reviews</div>
-        <div class="cert-org">Cisco Networking Academy · Muzaffarpur Institute of Technology — 09 Jun 2026</div>
-        <span class="cert-badge">Cisco NetAcad</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">Python Essentials 1</div>
-        <div class="cert-org">Cisco Networking Academy + Python Institute · Muzaffarpur Institute of Technology — 14 Jun 2026</div>
-        <span class="cert-badge">Cisco NetAcad</span>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-name">CCNA: Introduction to Networks</div>
-        <div class="cert-org">Cisco Networking Academy · Muzaffarpur Institute of Technology — 14 Jun 2026</div>
-        <span class="cert-badge">Cisco NetAcad</span>
-      </div>
-
+<!-- ── ACHIEVEMENTS ── -->
+<section id="achievements">
+  <div class="container">
+    <div class="sec-label reveal">
+      <span class="sec-num">05</span>
+      <div class="sec-line"></div>
+      <h2>ACHIEVEMENTS</h2>
+      <div class="sec-line"></div>
     </div>
 
-    <!-- ACHIEVEMENTS -->
-    <div class="achievements-list">
-
+    <div class="ach-grid reveal">
       <div class="ach-item">
-        <span class="ach-icon">★</span>
+        <div class="ach-rank">01</div>
         <div>
           <div class="ach-title">IDEA ONE National Health Hackathon 2025 — National Top-4</div>
-          <div class="ach-desc">Project SAI biosensor recognised for real-world public health impact across all university teams in India.</div>
+          <div class="ach-desc">Project SAI biosensor recognised for real-world public health impact across all university teams in India</div>
         </div>
+        <span class="ach-badge gold">Top 4 🏆</span>
       </div>
-
       <div class="ach-item">
-        <span class="ach-icon">★</span>
+        <div class="ach-rank">02</div>
         <div>
           <div class="ach-title">ISRO Robotics Challenge IRoC-U 2025 — Finalist</div>
-          <div class="ach-desc">Team MARTIANS selected among India's top university robotics teams for planetary exploration autonomous systems.</div>
+          <div class="ach-desc">Team MARTIANS selected among India's top university robotics teams for planetary exploration autonomous systems</div>
         </div>
+        <span class="ach-badge">ISRO Finalist</span>
       </div>
-
       <div class="ach-item">
-        <span class="ach-icon">★</span>
+        <div class="ach-rank">03</div>
         <div>
-          <div class="ach-title">ET-AI Hackathon 2026 (The Economic Times) — Semi-Finalist</div>
-          <div class="ach-desc">Recognised for innovation in building meaningful AI solutions; certificate by Puneet Kukreja, Business Head, ET Digital.</div>
+          <div class="ach-title">ET-AI Hackathon 2026 (Economic Times) — Semi-Finalist</div>
+          <div class="ach-desc">Recognised for innovation in building meaningful AI solutions · Certificate by Puneet Kukreja, Business Head, ET Digital</div>
         </div>
+        <span class="ach-badge purple">Semi-Finalist</span>
       </div>
-
-      <!-- ── NEW ACHIEVEMENTS ── -->
       <div class="ach-item">
-        <span class="ach-icon">★</span>
+        <div class="ach-rank">04</div>
         <div>
           <div class="ach-title">AESTR Alpha AI Summit 2026 — Participant</div>
-          <div class="ach-desc">Sprint-format engineering innovation challenge alongside industry engineers and AI practitioners.</div>
+          <div class="ach-desc">Sprint-format engineering innovation challenge alongside industry engineers and AI practitioners</div>
         </div>
+        <span class="ach-badge gray">AI Summit</span>
       </div>
-
       <div class="ach-item">
-        <span class="ach-icon">★</span>
+        <div class="ach-rank">05</div>
         <div>
           <div class="ach-title">Dainik Jagran — Featured in Muzaffarpur Jagran (May 2026)</div>
-          <div class="ach-desc">Quoted as part of the Jal Abhimat water conservation awareness initiative; represented MIT Muzaffarpur on responsible water use and the role of youth in conservation.</div>
+          <div class="ach-desc">Quoted in Jal Abhimat water conservation initiative · Represented MIT Muzaffarpur on youth & responsible water use</div>
         </div>
+        <span class="ach-badge pink">Media Feature</span>
       </div>
-
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-<!-- ───────────────── FOOTER ───────────────── -->
+<!-- ── FOOTER ── -->
 <footer>
   <div class="container">
-    <p>Mohit Raj — Patna, Bihar, India — Last updated June 2026</p>
+    <div class="footer-logo">MOHIT RAJ</div>
+    <p>Biomedical & Robotics Engineering · MIT Muzaffarpur · Patna, Bihar, India</p>
+    <p style="margin-top:6px">mohitraj.2k23@gmail.com · Last updated June 2026</p>
   </div>
 </footer>
 
+</div><!-- /wrap -->
+
+<script>
+/* ── ANIMATED PARTICLE CANVAS ── */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], lines = [];
+
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor(){this.reset()}
+  reset(){
+    this.x = Math.random()*W;
+    this.y = Math.random()*H;
+    this.vx = (Math.random()-.5)*.4;
+    this.vy = (Math.random()-.5)*.4;
+    this.r = Math.random()*1.5+.5;
+    this.alpha = Math.random()*.6+.2;
+    this.color = Math.random()>.5 ? '0,245,212' : '14,165,233';
+  }
+  update(){
+    this.x+=this.vx; this.y+=this.vy;
+    if(this.x<0||this.x>W||this.y<0||this.y>H) this.reset();
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${this.color},${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+for(let i=0;i<90;i++) particles.push(new Particle());
+
+function drawLines(){
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x;
+      const dy=particles[i].y-particles[j].y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<130){
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(0,245,212,${.12*(1-dist/130)})`;
+        ctx.lineWidth=.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{p.update();p.draw()});
+  drawLines();
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ── TYPING EFFECT ── */
+const roles=[
+  'Biomedical Engineer',
+  'Robotics Engineer',
+  'Embedded Systems Developer',
+  'MedTech Innovator',
+  'AI & IoT Builder'
+];
+let ri=0,ci=0,deleting=false;
+const el=document.getElementById('typed');
+function type(){
+  const r=roles[ri];
+  if(!deleting){
+    el.textContent=r.slice(0,++ci);
+    if(ci===r.length){deleting=true;setTimeout(type,1800);return}
+  } else {
+    el.textContent=r.slice(0,--ci);
+    if(ci===0){deleting=false;ri=(ri+1)%roles.length}
+  }
+  setTimeout(type,deleting?50:90);
+}
+type();
+
+/* ── SCROLL REVEAL ── */
+const reveals=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}
+  });
+},{threshold:.1});
+reveals.forEach(r=>observer.observe(r));
+
+/* ── COUNTER ANIMATION ── */
+function animateCount(el,target){
+  let c=0,inc=Math.ceil(target/40);
+  const t=setInterval(()=>{
+    c=Math.min(c+inc,target);
+    el.textContent=c;
+    if(c>=target)clearInterval(t);
+  },40);
+}
+const countEl=document.getElementById('cert-count');
+const countObs=new IntersectionObserver(e=>{
+  if(e[0].isIntersecting){animateCount(countEl,15);countObs.disconnect()}
+},{threshold:.5});
+countObs.observe(countEl);
+</script>
 </body>
 </html>
